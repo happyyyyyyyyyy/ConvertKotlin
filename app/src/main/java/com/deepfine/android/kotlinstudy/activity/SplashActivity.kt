@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.room.Room
 import com.deepfine.android.kotlinstudy.BuildConfig
 import com.deepfine.android.kotlinstudy.R
+import com.deepfine.android.kotlinstudy.Utility
 import com.deepfine.android.kotlinstudy.api.DogApiObject
 import com.deepfine.android.kotlinstudy.databinding.ActivitySplashBinding
 import com.deepfine.android.kotlinstudy.dto.DogDto
@@ -81,8 +82,8 @@ class SplashActivity : AppCompatActivity() {
             }
             animationThread.start()
             val dataThread = thread(false) {
-                Log.d("TAG", "startSplashThread: " + isNetworkConnected())
-                if (isNetworkConnected())
+                Log.d("TAG", "startSplashThread: " + Utility().isNetworkConnected(this@SplashActivity))
+                if (Utility()isNetworkConnected(this@SplashActivity))
                     Log.d("TAG", "run: 인터넷 연결이 원활하지 않아 db의 데이터로 호출")
                 else {
                     getApiData()
@@ -91,11 +92,6 @@ class SplashActivity : AppCompatActivity() {
             }
             dataThread.start()
         }
-    }
-
-    fun isNetworkConnected(): Boolean { //인터넷 X -> null 반환
-        val connectivityManager = getSystemService(ConnectivityManager::class.java)
-        return connectivityManager.activeNetwork == null // null이면 true 반환(인터넷 X) 아니면 false 반환(인터넷 O)
     }
 
     private fun getApiData() {
@@ -134,7 +130,7 @@ class SplashActivity : AppCompatActivity() {
         db.getDogDao().insert(dogData)
     }
     companion object {
-        private const val DELAY_TIME = 5
+        private const val DELAY_TIME = 3
         private const val DELAY_COUNT = 3
     }
 }

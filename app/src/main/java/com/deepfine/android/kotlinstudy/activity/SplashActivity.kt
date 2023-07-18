@@ -126,8 +126,10 @@ class SplashActivity : AppCompatActivity() {
   }
 
   fun insertApiDataIntoDB(dogDto: DogDto) {
-    val dogData = DogData(dogDto.id, dogDto.name, dogDto.bredFor, dogDto.image.url, false)
-    db.getDogDao().insert(dogData)
+    val dogData = dogDto.image?.let { DogData(dogDto.id, dogDto.name, dogDto.bredFor, it.url, false) }
+    if (dogData != null) {
+      db.getDogDao().insert(dogData)
+    }
   }
 
   companion object {
